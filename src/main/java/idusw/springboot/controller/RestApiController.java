@@ -32,6 +32,7 @@ public class RestApiController {
 
         return result;
     }
+
     @PutMapping("/{id}")
     public String updateOne(@PathVariable Long id, Model model) {
         String result = "";
