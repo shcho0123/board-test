@@ -1,28 +1,30 @@
 package idusw.springboot.entity;
 
-import lombok.*;
 import jakarta.persistence.*;
+import lombok.*;
 
-@Entity
-@Table(name = "sw_board")
+@Entity // 엔티티 클래스임으로 나타내는 애노테이션
+@Table(name = "b201612038_board")
 
+@ToString   // lombok 라이브러리 사용
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@ToString(exclude = "writer")
+
+// JPA Auditing 을 활용하여서 생성한사람, 생성일자, 수정한사람, 수정일자 등을 선택하여서 감사
 public class BoardEntity extends BaseEntity {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sw_board_seq_gen")
-    @SequenceGenerator(sequenceName = "sw_board_seq", name = "sw_board_seq_gen", allocationSize = 1)
-    private Long bno; // 유일키
-
-    private String title; // 제목
-    private String content; // 내용
-    private Long views; // 조회수
-    private String block; // 차단여부
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "b201612038_board_seq_gen")
+    @SequenceGenerator(sequenceName = "b201612038_board_seq_gen", name = "b201612038_board_seq_gen", initialValue = 1, allocationSize = 1)
+    // Oracle : GenerationType.SEQUENCE, Mysql : GenerationType.IDENTITY, auto_increment
+    private Long bno;
+    @Column(length = 50, nullable = false)
+    private String title;
+    @Column(length = 1000, nullable = false)
+    private String content;
 
     @ManyToOne
-    private MemberEntity writer;  //연관 관계 지정 : 작성자 1명 - 게시물 다수
+    // @JoinColumn(name = "seq")
+    private MemberEntity writer; // BoardEntity : MemberEntity = N : 1
 }
