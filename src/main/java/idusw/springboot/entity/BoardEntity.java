@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity // 엔티티 클래스임으로 나타내는 애노테이션
-@Table(name = "b201612038_board")
+@Table(name = "b201612038_b")
 
 @ToString   // lombok 라이브러리 사용
 @Getter
@@ -15,8 +15,8 @@ import lombok.*;
 // JPA Auditing 을 활용하여서 생성한사람, 생성일자, 수정한사람, 수정일자 등을 선택하여서 감사
 public class BoardEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "b201612038_board_seq_gen")
-    @SequenceGenerator(sequenceName = "b201612038_board_seq_gen", name = "b201612038_board_seq_gen", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "b201612038_b_seq_gen")
+    @SequenceGenerator(sequenceName = "b201612038_b_seq_gen", name = "b201612038_b_seq_gen", initialValue = 1, allocationSize = 1)
     // Oracle : GenerationType.SEQUENCE, Mysql : GenerationType.IDENTITY, auto_increment
     private Long bno;
     @Column(length = 50, nullable = false)

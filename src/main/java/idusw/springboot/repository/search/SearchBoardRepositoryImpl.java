@@ -10,6 +10,7 @@ import com.querydsl.jpa.JPQLQuery;
 import idusw.springboot.entity.BoardEntity;
 import idusw.springboot.entity.QBoardEntity;
 import idusw.springboot.entity.QMemberEntity;
+import idusw.springboot.entity.QReplyEntity;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -40,17 +41,17 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
         log.info("--------- searchPage -------------");
         QBoardEntity boardEntity = QBoardEntity.boardEntity;
-        //QReplyEntity replyEntity = QReplyEntity.replyEntity;
+        QReplyEntity replyEntity = QReplyEntity.replyEntity;
         QMemberEntity memberEntity = QMemberEntity.memberEntity;
 
         JPQLQuery<BoardEntity> jpqlQeury = from(boardEntity);
         jpqlQeury.leftJoin(memberEntity).on(boardEntity.writer.eq(memberEntity));
-        //jpqlQeury.leftJoin(replyEntity).on(replyEntity.board.eq(boardEntity));
+        jpqlQeury.leftJoin(replyEntity).on(replyEntity.board.eq(boardEntity));
         // select b, w from BoardEntity b left join b.writer w on b.writer = w;
 
         // select b, w, count(r) from BoardEntity b left join b.writer w left join ReplyEntity r on r.board = b;
-        //JPQLQuery<Tuple> tuple = jpqlQeury.select(boardEntity, memberEntity, replyEntity.count());
-        JPQLQuery<Tuple> tuple = jpqlQeury.select(boardEntity, memberEntity);
+        JPQLQuery<Tuple> tuple = jpqlQeury.select(boardEntity, memberEntity, replyEntity.count());
+        //JPQLQuery<Tuple> tuple = jpqlQeury.select(boardEntity, memberEntity);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression= boardEntity.bno.gt(0L); // sequence number > 0L 모두 만족하므로 모두임
@@ -88,7 +89,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
             tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
         });
 
-        tuple.groupBy(boardEntity);
+        tuple.groupBy(boardEntity, memberEntity);
 
         // page 처리
         tuple.offset(pageable.getOffset()); // 시작 페이지 vs 현재 페이지를 사용하지는 않음
