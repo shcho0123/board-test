@@ -28,8 +28,8 @@
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">Posted on [[${board.regDate}]] by [[${board.writerEmail}]]</div>
                             <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                            <a class="badge bg-secondary text-decoration-none link-light" th:href="@{/boards/{bno}/up-form(bno=${board.bno})}">수정</a>
+                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">삭제</a>
                         </header>
                         <!-- Preview image figure-->
                         <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
@@ -112,7 +112,7 @@
                                                 $('.reply-count').html(" Reply Count  " + arr.length);
                                                 $.each(arr, function (idx, reply) {
                                                     console.log(reply);
-                                                    str += '    <div class="card-body" data-rno="' + reply.rno + '"><b>' + reply.rno + '</b>';
+                                                    str += '    <div class="card-body" data-rno="' + reply.rno + '"><b>' + reply.replier + '</b>';
                                                     str += '    <h5 class="card-title">' + reply.text + '</h5>';
                                                     str += '    <h6 class="card-subtitle mb-2 text-muted">' + 'Post on ' + formatTime(reply.regDate) + ' by ' + reply.replier + '</h6>';
                                                     str += '    </div><hr>';
